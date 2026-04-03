@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Busca de Artistas</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #111;
+      color: #fff;
+      padding: 20px;
+    }
 
+    input {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+
+    #buscarBtn {
+      background: #28a745;
+      color: white;
+    }
+
+    #resultado {
+      margin-top: 20px;
+      font-size: 18px;
+      background: #222;
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎵 Busca de Artistas</h1>
+
+  <input type="text" id="artista" placeholder="Digite o nome do artista">
+  <br>
+  <button id="buscarBtn" onclick="buscar()">Buscar</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    const dados = {
+      "zeze de camargo e luciano": {
+        cds: 25,
+        lps: 10,
+        musicas: 300
+      },
+      "gusttavo lima": {
+        cds: 15,
+        lps: 5,
+        musicas: 200
+      },
+      "anitta": {
+        cds: 6,
+        lps: 2,
+        musicas: 150
+      }
+    };
+
+    function buscar() {
+      const nome = document.getElementById("artista").value.toLowerCase();
+      const resultado = document.getElementById("resultado");
+
+      if (dados[nome]) {
+        resultado.innerHTML = `
+          🎤 <b>${nome.toUpperCase()}</b><br><br>
+          💿 CDs: ${dados[nome].cds}<br>
+          📀 LPs: ${dados[nome].lps}<br>
+          🎵 Músicas: ${dados[nome].musicas}
+        `;
+      } else {
+        resultado.innerHTML = "❌ Artista não encontrado.";
+      }
+    }
+  </script>
+
+</body>
+</html>
