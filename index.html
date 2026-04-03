@@ -101,3 +101,108 @@
   { "nome": "Djavan", "genero": "MPB" },
   { "nome": "Caetano Veloso", "genero": "MPB" }
 ]
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Busca de Artistas PRO</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #000;
+  color: white;
+  text-align: center;
+}
+
+header {
+  padding: 20px;
+  font-size: 28px;
+}
+
+input {
+  padding: 12px;
+  width: 250px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  padding: 12px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.buscar { background: green; color: white; }
+
+#resultado {
+  margin-top: 20px;
+  padding: 20px;
+}
+
+img {
+  width: 200px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>🎵 Busca de Artistas</header>
+
+<input id="input" placeholder="Digite artista">
+<br>
+<button class="buscar" onclick="buscar()">Buscar</button>
+
+<div id="resultado"></div>
+
+<script>
+let artistas = [];
+
+function normalizar(t) {
+  return t.toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+// carregar JSON
+fetch("artistas.json")
+  .then(r => r.json())
+  .then(data => artistas = data);
+
+// busca inteligente
+function buscar() {
+  let nome = normalizar(document.getElementById("input").value);
+
+  let encontrado = artistas.find(a =>
+    normalizar(a.nome).includes(nome)
+  );
+
+  if (encontrado) {
+    mostrar(encontrado);
+  } else {
+    document.getElementById("resultado").innerHTML =
+      "❌ Não encontrado";
+  }
+}
+
+// mostrar resultado + imagem automática
+function mostrar(artista) {
+  let nome = artista.nome;
+
+  let imagem = `https://source.unsplash.com/300x300/?${encodeURIComponent(nome)},music`;
+
+  document.getElementById("resultado").innerHTML = `
+    <h2>${nome}</h2>
+    <p>${artista.genero}</p>
+    <img src="${imagem}">
+  `;
+}
+</script>
+
+</body>
+</html>
