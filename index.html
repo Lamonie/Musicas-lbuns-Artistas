@@ -1,1 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Artistas Melhorado</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: white;
+            background: linear-gradient(-45deg, #0d1127, #1a224a, #23a6d5, #e73c7e);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            overflow-x: hidden; /* Previne a barra de rolagem horizontal */
+        }
 
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .search-container {
+            text-align: center;
+            padding: 25px;
+        }
+
+        #search-input {
+            padding: 12px 20px;
+            width: 60%;
+            max-width: 500px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        #search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        #search-input:focus {
+            border-color: #23d5ab;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .artists-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            gap: 25px;
+        }
+
+        .artist-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            width: 320px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .artist-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .artist-card img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .artist-card h2 {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: #23d5ab;
+        }
+        
+        .artist-info, .albums-list, .hits-list {
+            margin-top: 10px;
+        }
+        
+        .albums-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .albums-list li {
+            background-color: rgba(0,0,0,0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .music-controls button {
+            padding: 8px 12px;
+            margin: 5px 2px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background-color: #e73c7e;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .music-controls button:hover {
+            background-color: #ee7752;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Explorador Musical</h1>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Busque por um artista...">
+    </div>
+
+    <div class="artists-container" id="artists-container">
+        <!-- Cards dos artistas serão inseridos aqui -->
+    </div>
+
+    <script>
+        const artistsData = [
+            {
+                name: 'Daft Punk',
+                image: 'https://i.scdn.co/image/ab6761610000e5ebc429344bde4618a56250954b',
+                albums: ['Homework', 'Discovery', 'Human After All', 'Random Access Memories'],
+                hits: [
+                    { title: 'Get Lucky', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' },
+                    { title: 'One More Time', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' },
+                    { title: 'Harder, Better, Faster, Stronger', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' }
+                ]
+            },
+            {
+                name: 'Gorillaz',
+                image: 'https://i.scdn.co/image/ab6761610000e5eb26a71efb33037894a4805763',
+                albums: ['Gorillaz', 'Demon Days', 'Plastic Beach', 'Humanz', 'The Now Now', 'Song Machine', 'Cracker Island'],
+                hits: [
+                    { title: 'Feel Good Inc.', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' },
+                    { title: 'Clint Eastwood', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' }
+                ]
+            },
+            {
+                name: 'The Strokes',
+                image: 'https://i.scdn.co/image/ab6761610000e5ebadd1b7b4d40239c822557764',
+                albums: ['Is This It', 'Room on Fire', 'First Impressions of Earth', 'Angles', 'Comedown Machine', 'The New Abnormal'],
+                hits: [
+                    { title: 'Last Nite', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' },
+                    { title: 'Reptilia', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' },
+                    { title: 'Someday', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' }
+                ]
+            },
+             {
+                name: 'Arctic Monkeys',
+                image: 'https://i.scdn.co/image/ab6761610000e5ebc2a26558434313f80c6c5186',
+                albums: ['Whatever People Say I Am, That\'s What I\'m Not', 'Favourite Worst Nightmare', 'Humbug', 'Suck It and See', 'AM', 'Tranquility Base Hotel & Casino', 'The Car'],
+                hits: [
+                    { title: 'Do I Wanna Know?', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' },
+                    { title: 'R U Mine?', url: 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_16886d2d25.mp3' }
+                ]
+            }
+        ];
+
+        const searchInput = document.getElementById('search-input');
+        const artistsContainer = document.getElementById('artists-container');
+        let currentAudio = null;
+        let audioTimer = null;
+
+        function renderArtists(artists) {
+            artistsContainer.innerHTML = '';
+            artists.forEach(artist => {
+                const artistCard = document.createElement('div');
+                artistCard.className = 'artist-card';
+
+                // Lista de álbuns
+                const albumsHtml = artist.albums.map(album => `<li>${album}</li>`).join('');
+
+                // Lista de sucessos com botões de play
+                const hitsHtml = artist.hits.map(hit => `
+                    <div class="music-controls">
+                        <span>${hit.title}</span>
+                        <button onclick="playMusicSnippet('${hit.url}')">▶ Tocar Trecho</button>
+                    </div>
+                `).join('');
+
+                artistCard.innerHTML = `
+                    <img src="${artist.image}" alt="${artist.name}">
+                    <h2>${artist.name}</h2>
+                    
+                    <div class="artist-info">
+                        <strong>Músicas de Sucesso:</strong> ${artist.hits.length}
+                    </div>
+
+                    <div class="albums-list">
+                        <strong>Álbuns:</strong>
+                        <ul>${albumsHtml}</ul>
+                    </div>
+
+                    <div class="hits-list">
+                        <strong>Ouvir Sucessos:</strong>
+                        ${hitsHtml}
+                    </div>
+                `;
+                artistsContainer.appendChild(artistCard);
+            });
+        }
+        
+        window.playMusicSnippet = function(url) {
+            // Para qualquer áudio que estiver tocando
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+            // Limpa o timer anterior se houver
+            if (audioTimer) {
+                clearTimeout(audioTimer);
+            }
+
+            currentAudio = new Audio(url);
+            currentAudio.play();
+
+            // Define um timer para parar a música após 15 segundos
+            audioTimer = setTimeout(() => {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                }
+            }, 15000); // 15000 milissegundos = 15 segundos
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredArtists = artistsData.filter(artist => 
+                artist.name.toLowerCase().includes(searchTerm)
+            );
+            renderArtists(filteredArtists);
+        });
+
+        // Renderiza todos os artistas inicialmente
+        renderArtists(artistsData);
+    </script>
+</body>
+</html>
